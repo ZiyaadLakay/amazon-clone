@@ -1,5 +1,7 @@
 This is an Amazon clone using Next.JS, Tailwind.CSS and Redux, Firebase
 
+link to deployment https://ziyaadlakay-amazon-clone.vercel.app/
+
 # Installation Steps
 
 ## Using npm
@@ -19,4 +21,3 @@ Run commands
 2. `yarn install`
 
 3. `yarn run dev`
-
