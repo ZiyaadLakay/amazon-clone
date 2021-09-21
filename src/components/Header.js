@@ -1,10 +1,34 @@
 import Image from "next/image";
+import React, { useState, useEffect } from "react";
 import {
   MenuIcon,
   SearchIcon,
   ShoppingCartIcon,
 } from "@heroicons/react/outline";
+import { useRouter } from "next/router";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "../../firebase";
+
 function Header() {
+  const router = useRouter();
+  const [user] = useAuthState(auth);
+
+  useEffect(() => {
+    if (user) {
+      db.collection("users").doc(user.uid).set(
+        {
+          email: user.email,
+          name: user.displayName,
+        },
+        { merge: true }
+      );
+    }
+  }, [user]);
+
+  const goToLogin = () => {
+    router.push("login");
+  };
+
   return (
     <header>
       {/* Top Nav */}
@@ -26,9 +50,24 @@ function Header() {
         </div>
 
         {/* Right Side */}
-        <div className="right-side">
+        <div
+          onClick={() => {
+            if (user) {
+              auth.signOut();
+              alert("Sigined Out of Account");
+            } else {
+              goToLogin();
+            }
+          }}
+          className="right-side"
+        >
           <div className="link">
-            <p>Hello Guy</p>
+            {user ? (
+              <p>Hello {user.displayName.split(" ")[0]}</p>
+            ) : (
+              <p>Hello Guy</p>
+            )}
+
             <p className="font-bold">Account & Lists</p>
           </div>
 
