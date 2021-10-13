@@ -8,10 +8,14 @@ import {
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../../firebase";
+import { selectItems } from "../slices/basketSlice";
+import { useSelector } from "react-redux";
 
 function Header() {
   const router = useRouter();
   const [user] = useAuthState(auth);
+
+  const items = useSelector(selectItems);
 
   useEffect(() => {
     if (user) {
@@ -40,6 +44,7 @@ function Header() {
             height="50"
             objectFit="contain"
             className="cursor-pointer"
+            onClick={() => router.push("/")}
           />
         </div>
 
@@ -50,23 +55,19 @@ function Header() {
         </div>
 
         {/* Right Side */}
-        <div
-          onClick={() => {
-            if (user) {
-              auth.signOut();
-              alert("Sigined Out of Account");
-            } else {
-              goToLogin();
-            }
-          }}
-          className="right-side"
-        >
-          <div className="link">
-            {user ? (
-              <p>Hello {user.displayName.split(" ")[0]}</p>
-            ) : (
-              <p>Hello Guy</p>
-            )}
+        <div className="right-side">
+          <div
+            className="link"
+            onClick={() => {
+              if (user) {
+                auth.signOut();
+                alert("Sigined Out of Account");
+              } else {
+                goToLogin();
+              }
+            }}
+          >
+            {user ? <p>Hello {user.displayName}</p> : <p>Sign In</p>}
 
             <p className="font-bold">Account & Lists</p>
           </div>
@@ -76,8 +77,11 @@ function Header() {
             <p className="font-bold">& Orders</p>
           </div>
 
-          <div className="relative link flex intems-center">
-            <span className="items-count">0</span>
+          <div
+            className="relative link flex items-center"
+            onClick={() => router.push("checkout")}
+          >
+            <span className="items-count">{items.length}</span>
             <ShoppingCartIcon className="h-10" />
             <p className="basket-text">Basket</p>
           </div>

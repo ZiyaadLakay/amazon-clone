@@ -20,16 +20,18 @@ function login() {
       </Head>
 
       <div>
-        <Image
-          src="/amazon.svg"
-          width="70"
-          height="50"
-          objectFit="contain"
-          className="cursor-pointer"
-        />
-        <button onClick={signIn} className="flex flex-col mt-auto button">
-          Login With your Google Account
-        </button>
+        <div className="flex justify-center pb-2 pt-20">
+          <Image
+            src="/amazon.svg"
+            width="300"
+            height="300"
+            objectFit="contain"
+          />
+        </div>
+
+        <div className="flex flex-col mt-auto button">
+          <button onClick={signIn}>Login With your Google Account</button>
+        </div>
       </div>
     </div>
   );
